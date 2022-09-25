@@ -136,12 +136,16 @@ const Post = () => {
     }
   }
 
+  const handleComment = id => {
+    navigate(`/posts/${id}`)
+  }
+
   const handleLogout = () => {
     auth.signOut()
     .then(() => {
       alert('Logged Out Successfully!')
       navigate('/login')
-      localStorage.removeItem("authToken")
+      localStorage.removeItem("user_id")
     })
     .catch(err => {
       alert(err)
@@ -201,45 +205,45 @@ const Post = () => {
         : (
           fields.map(post => {
             return (
-            <div className="card-grid" key={post.id}>
+            <div className="card-grid" key={post?.id}>
             <div className="main">        
             <div className="card">
                   <Grid container spacing={2}>
                     <Grid item xs={4} style={{'paddingTop': '0'}}>
-                      <img className="img-post" src={post.pphoto} alt="post_img" />
+                      <img className="img-post" src={post?.pphoto} alt="post_img" />
                     </Grid> 
                     <Grid item xs={8} style={{'paddingTop': '0','paddingLeft': '0'}}>
                       <br /><br />
                       <Typography variant='h4'>
-                        {post.phead}
+                        {post?.phead}
                         </Typography>
                       <br />
                       <Typography>
-                        {post.msg}
+                        {post?.msg}
                       </Typography>
                       <br />
                       <Typography color="gray">
                         Created By: {post.createdBy}
                         <br /><br />
                         <button 
-                        id={post.id} 
+                        id={post?.id} 
                         onClick={() => handleLike(post.id,post.plike)} 
                         style={{cursor: 'pointer',
                         padding: 7,
                         border: '1px solid #0d6efd',
                         borderRadius: '4px',
-                        backgroundColor: post.plike?.includes(cur_user.uid) ? "#0d6efd" : "white",
-                        color: post.plike?.includes(cur_user.uid) ? "white" : "#0d6efd"
+                        backgroundColor: post?.plike?.includes(cur_user.uid) ? "#0d6efd" : "white",
+                        color: post?.plike?.includes(cur_user.uid) ? "white" : "#0d6efd"
                       }} 
                         // className={`liked-btn ${!post.plike?.includes(cur_user.uid) ? 'liked' : ''}`}
                         >
-                          👍 Like <span style={{marginLeft: '2px'}}>{post.plike.length}</span>
+                          👍 Like <span style={{marginLeft: '2px'}}>{post?.plike?.length}</span>
                           </button>
                           
                       </Typography>
                       <br />
                       <Typography align="right" marginRight={5}>
-                          <button className='btn'>Read More </button>
+                          <button onClick={() => handleComment(post?.id)} className='btn'>Read More </button>
                       </Typography>
                       <br />
                     </Grid> 

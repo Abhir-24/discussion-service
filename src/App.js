@@ -3,6 +3,7 @@ import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Post from './components/Post';
+import Comment from './components/Comment';
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
           <Route path='/posts' element={<Post />} />
+          <Route path='/posts/:id' element={<Comment />} />
         </Routes>
       </Router>
     </div>

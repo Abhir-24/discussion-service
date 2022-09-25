@@ -55,7 +55,11 @@ h2 {
     padding: 30px 40px;
   }
 
-  .control {
+  .form-2 {
+    padding: 30px 10px;
+  }
+
+  .control,.control-2 {
     margin-bottom: 10px;
     padding-bottom: 20px;
     position: relative;
@@ -67,13 +71,20 @@ h2 {
     margin-bottom: 5px;
   }
   
-  .control input, .control textarea {
+  .control input, .control textarea, .control-2 .comm-value {
     border: 2px solid white;
     border-radius: 4px;
     display: block;
     width: 100%;
     padding: 10px;
     font-size: 16px;
+  }
+
+
+
+  .control-2 .comm-value {
+    display: inline;
+    width: 400px;
   }
 
   .control textarea {
@@ -94,7 +105,7 @@ h2 {
     font-weight: bold;
   }
 
-  .button {
+  .button,.button2 {
     cursor: pointer;
     border: 1px solid #0d6efd;
     text-align: center;
@@ -106,6 +117,11 @@ h2 {
     border-radius: 4px;
     margin-top: 20px;
     margin-left: 95px;
+    }
+
+    .button2 {
+      margin-left: 20px;
+      padding: 10px 30px;
     }
 
     .button:hover, .btn:hover {
@@ -129,11 +145,21 @@ h2 {
     text-decoration: none;
 }
 
+.btns {
+  display: flex;
+  justify-content: space-between;
+}
+
 .btn-logout {
     justify-content: right;
     text-align: right;
     margin-top: 30px;
     margin-right: 50px;
+}
+
+.btn-back {
+    margin-top: 30px;
+    margin-left: 50px;
 }
 
 .btn {
@@ -154,6 +180,14 @@ h2 {
   margin: 20px;
 }
 
+.img-post-2 {
+  width: 300px;
+  height: 200px;
+  border-radius: 4px;
+  margin-top: 30px;
+  /* margin: 20px; */
+}
+
 .like-btn {
   padding: 5px;
   background-color: transparent;
@@ -171,4 +205,29 @@ background-color: #0d6efd;
 .no-posts-head {
   text-align: center;
   margin: 60px auto;
+}
+
+.comment-box {
+  margin-right: 400px;
+  /* border: 1px solid black; */
+  border-radius: 5px;
+  background-color: lightgray;
+  padding: 10px 20px;
+}
+
+.comment-sec {
+  margin-top: 80px;
+  margin-left: 150px;
+}
+
+.comment-text {
+  margin-top: 30px;
+}
+
+.threads {
+  margin-top: 50px;
+}
+
+.user-msg {
+  margin-top: 20px;
 }
