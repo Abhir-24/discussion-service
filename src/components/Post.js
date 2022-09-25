@@ -13,7 +13,6 @@ const Post = () => {
   const [errPostName,setErrPostName] = useState('')
   const [errMessage,setErrMessage] = useState('')
   const [errImgURL,setErrImgURL] = useState('')
-  // const [like,setLike] = useState(false)
   const [fields,setFields] = useState([])
 
   const cur_user = auth.currentUser

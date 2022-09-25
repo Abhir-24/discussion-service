@@ -11,6 +11,7 @@ const Comment = () => {
     const navigate = useNavigate()
     const cur_user = auth.currentUser
     const [comm,setComm] = useState('')
+    const [comLike,setComLike] = useState(false)
     const [thread,setThread] = useState([])
     const [comment,setComment] = useState(null)
 
@@ -49,7 +50,7 @@ const Comment = () => {
 
     const handleSubmit = e => {
       e.preventDefault()
-      
+
       const commRef = doc(db,"posts",id)
 
       if(comm.length > 0) {
@@ -59,7 +60,7 @@ const Comment = () => {
             userName: cur_user.displayName,
             comment: comm,
             comm_id: uuidv4(),
-            user_comm_like: []
+            user_comm_like: false
           }),
         }).then(() => setComm(''))
       }
@@ -83,6 +84,13 @@ const Comment = () => {
           }).catch(err =>console.log(err))
         }
       }
+
+    const handleCommentLike = (id,likes,doc_id) => {
+      const commLikeRef = doc(db,"posts",doc_id)
+      console.log(commLikeRef)
+
+
+    }  
 
     const handleLogout = () => {
         auth.signOut()
@@ -139,19 +147,21 @@ const Comment = () => {
                             <h3>Comments</h3>
                             { thread.map(thr => {
                               return (
-                                <div className="user-msg" key={thr.comm_id}>
+                                <div className="user-msg" key={thr?.user_comm_id}>
                                   <b>{thr.userName}:</b> {thr?.comment}  
                                   <span style={{marginLeft: '10px'}}></span>
-                                  <button style={{cursor: 'pointer',
+                                  <button 
+                                  onClick={() => setComLike(!comLike)}
+                                  style={{cursor: 'pointer',
                                                   marginTop: '15px',
                                                   padding: '4px 4px',
                                                   border: '1px solid #0d6efd',
-                                                  borderRadius: '4px',
-                                                  backgroundColor: 'white'
-                                                  // backgroundColor: comment?.plike?.includes(cur_user.uid) ? "#0d6efd" : "white",
-                                                  // color: comment?.plike?.includes(cur_user.uid) ? "white" : "#0d6efd"
+                                                  // borderRadius: '4px',
+                                                  // backgroundColor: 'white'
+                                                  backgroundColor: comLike ? "#0d6efd" : "white",
+                                                  color: comLike ? "white" : "#0d6efd"
                                               }}>
-                                                👍 <span style={{marginLeft: '2px'}}>2</span>
+                                                👍
                                               </button>
                                 </div>
 
