@@ -22,7 +22,6 @@ const Comment = () => {
 
             if(docSnap.exists())
             setComment({...docSnap.data(),id:id})
-            // console.log("comment",comment)
             else
             console.log('no data')
         }
@@ -37,7 +36,6 @@ const Comment = () => {
 
       if(docSnap.exists())
       setThread(docSnap.data().comments)
-      // console.log("comment",thread)
       else
       console.log('no data')
       }
@@ -73,24 +71,15 @@ const Comment = () => {
           updateDoc(likesRef, {
             plike: arrayRemove(cur_user.uid)
           }).then(() => {
-            // console.log("unliked")
           }).catch(err =>console.log(err))
         }
         else {
           updateDoc(likesRef, {
             plike: arrayUnion(cur_user.uid)
           }).then(() => {
-            // console.log("liked")
           }).catch(err =>console.log(err))
         }
-      }
-
-    const handleCommentLike = (id,likes,doc_id) => {
-      const commLikeRef = doc(db,"posts",doc_id)
-      console.log(commLikeRef)
-
-
-    }  
+      } 
 
     const handleLogout = () => {
         auth.signOut()
@@ -156,8 +145,6 @@ const Comment = () => {
                                                   marginTop: '15px',
                                                   padding: '4px 4px',
                                                   border: '1px solid #0d6efd',
-                                                  // borderRadius: '4px',
-                                                  // backgroundColor: 'white'
                                                   backgroundColor: comLike ? "#0d6efd" : "white",
                                                   color: comLike ? "white" : "#0d6efd"
                                               }}>

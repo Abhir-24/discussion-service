@@ -33,11 +33,8 @@ const Post = () => {
           plike: val.plike,
           pphoto: val.pphoto
         })
-        // console.log(doc.id, " => ", doc.data().msg)
       })
       setFields(fieldValues)
-
-      // console.log(fieldValues)
     }
 
     fetchData()
@@ -123,14 +120,12 @@ const Post = () => {
       updateDoc(likesRef, {
         plike: arrayRemove(cur_user.uid)
       }).then(() => {
-        // console.log("unliked")
       }).catch(err =>console.log(err))
     }
     else {
       updateDoc(likesRef, {
         plike: arrayUnion(cur_user.uid)
       }).then(() => {
-        // console.log("liked")
       }).catch(err =>console.log(err))
     }
   }
@@ -234,7 +229,6 @@ const Post = () => {
                         backgroundColor: post?.plike?.includes(cur_user.uid) ? "#0d6efd" : "white",
                         color: post?.plike?.includes(cur_user.uid) ? "white" : "#0d6efd"
                       }} 
-                        // className={`liked-btn ${!post.plike?.includes(cur_user.uid) ? 'liked' : ''}`}
                         >
                           👍 Like <span style={{marginLeft: '2px'}}>{post?.plike?.length}</span>
                           </button>
@@ -256,15 +250,6 @@ const Post = () => {
 
         )
       }
-      {/* <div className="card-grid">
-        <Card />
-      </div>
-      <div className="card-grid">
-        <Card />
-      </div>
-      <div className="card-grid">
-        <Card />
-      </div> */}
     </div>
   )
 }
