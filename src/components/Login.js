@@ -45,13 +45,13 @@ const Login = () => {
     e.preventDefault()
 
     if(validateForm()) {
-      console.log(email)
-      console.log(password)
+      // console.log(email)
+      // console.log(password)
 
     signInWithEmailAndPassword(auth,email,password)
     .then(async (res) => {
-      console.log(res.user.accessToken)
-      localStorage.setItem("authToken",res.user.accessToken)
+      // console.log(res.user.accessToken)
+      localStorage.setItem("user_id",res.user.uid)
       alert('Logged in Successfully!')
       setRedirect(true)
     })
