@@ -1,11 +1,9 @@
 import {useEffect, useState} from 'react'
 import { signOut } from 'firebase/auth'
-import { collection,doc,getDocs,addDoc } from 'firebase/firestore'
+import { collection,doc,getDocs,addDoc, updateDoc, arrayRemove, arrayUnion, getDoc } from 'firebase/firestore'
 import { auth,db } from '../firebase.config'
 import { Grid,Typography } from "@mui/material"
 import { useNavigate } from 'react-router-dom'
-import Card from './Card'
-import { async } from '@firebase/util'
 
 const Post = () => {
   const navigate = useNavigate()
@@ -15,8 +13,10 @@ const Post = () => {
   const [errPostName,setErrPostName] = useState('')
   const [errMessage,setErrMessage] = useState('')
   const [errImgURL,setErrImgURL] = useState('')
-  const [like,setLike] = useState(false)
+  // const [like,setLike] = useState(false)
   const [fields,setFields] = useState([])
+
+  const cur_user = auth.currentUser
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,9 +42,7 @@ const Post = () => {
     }
 
     fetchData()
-  },[])
-
-  const toggle = () => setLike(!like)
+  },[fields])
 
   const validateForm = () => {
     let validity = true
@@ -97,13 +95,17 @@ const Post = () => {
 
       if(user) {
         const userName = user.displayName
+        const id = user.uid
 
+        // console.log(user)
         await addDoc(collection(db,"posts"), {
+          user_id: id,
           createdBy: userName,
           msg: message,
           phead: postName,
-          plike: like,
-          pphoto: imgURL
+          plike: [],
+          pphoto: imgURL,
+          comments: []
         }).then(res => alert("Post is created successfully!"))
         .catch(err => alert(err))
 
@@ -113,6 +115,25 @@ const Post = () => {
     setPostName('')
     setImgURL('')
     setMessage('')
+  }
+  
+  const handleLike = async (id,likes) => {
+    const likesRef = doc(db,"posts",id)
+    
+    if(likes.includes(cur_user.uid)) {
+      updateDoc(likesRef, {
+        plike: arrayRemove(cur_user.uid)
+      }).then(() => {
+        // console.log("unliked")
+      }).catch(err =>console.log(err))
+    }
+    else {
+      updateDoc(likesRef, {
+        plike: arrayUnion(cur_user.uid)
+      }).then(() => {
+        // console.log("liked")
+      }).catch(err =>console.log(err))
+    }
   }
 
   const handleLogout = () => {
@@ -176,45 +197,61 @@ const Post = () => {
 
       <h1 className='article-head'>All Posts</h1>
       {
-        fields.map(post => {
-          return (
-          <div className="card-grid" key={post.id}>
-          <div className="main">        
-          <div className="card">
-                <Grid container spacing={2}>
-                  <Grid item xs={4} style={{'paddingTop': '0'}}>
-                    <img className="img-post" src={post.pphoto} alt="post_img" />
-                  </Grid> 
-                  <Grid item xs={8} style={{'paddingTop': '0','paddingLeft': '0'}}>
-                    <br /><br />
-                    <Typography variant='h4'>
-                      {post.phead}
-                      </Typography>
-                    <br />
-                    <Typography>
-                      {post.msg}
-                    </Typography>
-                    <br />
-                    <Typography color="gray">
-                      Created By: {post.createdBy}
+        fields.length === 0 ? (<h3 className='no-posts-head'>No Posts Found!</h3>)
+        : (
+          fields.map(post => {
+            return (
+            <div className="card-grid" key={post.id}>
+            <div className="main">        
+            <div className="card">
+                  <Grid container spacing={2}>
+                    <Grid item xs={4} style={{'paddingTop': '0'}}>
+                      <img className="img-post" src={post.pphoto} alt="post_img" />
+                    </Grid> 
+                    <Grid item xs={8} style={{'paddingTop': '0','paddingLeft': '0'}}>
                       <br /><br />
-                      <button onClick={() =>setLike(!post.plike)} style={{cursor: 'pointer',padding: 7,border: '1px solid #0d6efd',borderRadius: '4px'}} className={`liked-btn ${like ? 'liked' : ''}`}>
-                        👍 Like
-                        </button>
-                    </Typography>
-                    <br />
-                    <Typography align="right" marginRight={5}>
-                        <button className='btn'>Read More </button>
-                    </Typography>
-                    <br />
-                  </Grid> 
-                </Grid>
-              </div>
-          </div>
-          </div>
+                      <Typography variant='h4'>
+                        {post.phead}
+                        </Typography>
+                      <br />
+                      <Typography>
+                        {post.msg}
+                      </Typography>
+                      <br />
+                      <Typography color="gray">
+                        Created By: {post.createdBy}
+                        <br /><br />
+                        <button 
+                        id={post.id} 
+                        onClick={() => handleLike(post.id,post.plike)} 
+                        style={{cursor: 'pointer',
+                        padding: 7,
+                        border: '1px solid #0d6efd',
+                        borderRadius: '4px',
+                        backgroundColor: post.plike?.includes(cur_user.uid) ? "#0d6efd" : "white",
+                        color: post.plike?.includes(cur_user.uid) ? "white" : "#0d6efd"
+                      }} 
+                        // className={`liked-btn ${!post.plike?.includes(cur_user.uid) ? 'liked' : ''}`}
+                        >
+                          👍 Like <span style={{marginLeft: '2px'}}>{post.plike.length}</span>
+                          </button>
+                          
+                      </Typography>
+                      <br />
+                      <Typography align="right" marginRight={5}>
+                          <button className='btn'>Read More </button>
+                      </Typography>
+                      <br />
+                    </Grid> 
+                  </Grid>
+                </div>
+            </div>
+            </div>
+  
+            )
+          })
 
-          )
-        })
+        )
       }
       {/* <div className="card-grid">
         <Card />

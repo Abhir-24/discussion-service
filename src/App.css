@@ -168,4 +168,7 @@ color: white;
 background-color: #0d6efd;
 }
 
-
+.no-posts-head {
+  text-align: center;
+  margin: 60px auto;
+}
